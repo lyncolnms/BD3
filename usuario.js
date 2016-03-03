@@ -14,40 +14,46 @@ var User = function(data, pass) {
 };
 
 User.findAll = function(callback) {
-	var q = 'SELECT * FROM usuario';
+	var q = 'SELECT * FROM usuarios';
 	db(q, function(err, data) {
 		if(err)
 			callback(err, null);
 		else
-			callback(null, {data: data, query: q});
+			callback(null, data);
 	});
 };
 
 User.insert = function(user, password, callback) {
-	var q = "INSERT INTO usuario (usuario, senha) VALUES ('" + user + "','" + password + "')";
+	var q = "INSERT INTO usuarios (usuario, senha) VALUES ('" + user + "','" + password + "')";
 	db(q, function(err, data) {
 		if(err)
 			callback(err, null);
 		else
-			callback(null, {data: data, query: q});
+			callback(null, data);
 	});
 };
 
 User.findOne = function(data, callback) {
-	db("SELECT * FROM usuario WHERE usuario = '" + data.usuario + "'", function(err, rows) {
-		if(!rows.length)
+	db("SELECT * FROM usuarios WHERE usuario = '" + data.username + "'", function(err, rows) {
+		if(err)
+			callback(err, null)
+		else if(!rows.length)
 			callback(null, null);
 		else {
-			var user = new User(rows[0], data.senha);
+			var user = new User(rows[0], data.password)
 			callback(null, user);
 		}
 	});
 };
 
 User.findById = function(id, callback) {
-	db("SELECT * FROM usuario WHERE id = " + id, function(err, data) {	
-		var user = new User(data[0]);
-		callback(err, user);
+	db("SELECT * FROM usuarios WHERE id = " + id, function(err, data) {
+		if(err)
+			callback(err, null)
+		else {
+			var user = new User(data[0]);
+			callback(err, user);
+		}
 	});
 };
 

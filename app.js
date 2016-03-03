@@ -39,8 +39,11 @@ app.use(passport.session());
 app.use(flash());
 app.use(express.static(path.join(__dirname, 'public')));
 
+app.use(function(req, res, next){
+    res.locals.user = req.user?req.user:'';
+    next();
+});
 app.use('/', routes);
-
 
 // PASSPORT -------------
 passport.serializeUser(function(user, done) {
@@ -53,10 +56,7 @@ passport.deserializeUser(function(id, done) {
   });
 });
 
-passport.use(new LocalStrategy({
-  usernameField: 'usuario',
-  passwordField: 'senha'
-  },
+passport.use(new LocalStrategy(
   function(username, password, done) {
     User.findOne({ username: username, password: password}, function(err, user) {
       if (err) {
@@ -73,7 +73,6 @@ passport.use(new LocalStrategy({
     });
   }
 ));
-
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

@@ -1,22 +1,28 @@
 <% include ../header %>
 
-<div class="wrapper">
-	<div class="col-xs-9">
-		<table class="table table-hover">
-			<thead>
-				<tr>
-					<th>Usuário</th>
-					<th>Senha</th>
-				</tr>
-			</thead>
-			<tbody>
-				<% for(x in users)  { %>
-					<tr><%= x.usuario %></tr>
-					<tr><%= x.senha %></tr>
-				<% } %>
-			</tbody>
-		</table>
+	<div class="wrapper">
+		<div class="col-xs-9">
+			<table class="table table-hover">
+				<thead>
+					<tr>
+						<th>Usuário</th>
+						<th>Senha</th>
+					</tr>
+				</thead>
+				<tbody>
+					<% users.forEach(function(x) { %>
+						<tr>
+							<td>
+								<%= x.usuario %>
+							</td>
+							<td>
+								<%= x.senha %>
+							</td>
+						</tr>
+					<% }); %>
+				</tbody>
+			</table>
+		</div>
 	</div>
-</div>
 
-<% include ../footer %>
+	<% include ../footer %>
